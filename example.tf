@@ -12,6 +12,7 @@ resource "aws_instance" "main" {
 
   subnet_id              = "${aws_subnet.main.id}"
   vpc_security_group_ids = ["${aws_security_group.allow_all.id}"]
+  key_name               = "deployer"
 }
 
 #--------------------------------------------------------------
@@ -55,6 +56,11 @@ resource "aws_route_table" "r" {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name = "deployer-key" 
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfuwia8lm5IMFUgiGddpu/9c4AYyqaYRpaXuncYCdk94gbKAYR0C+YrnI2/sx/GyVwie28qg85s40pF8K/ibzO7MMXd9wyMO9Spc4UNvWFvw17DbG774Ht8amvF9drE7BufP42h0RY4Rj4EXQBY63UP5xMMRpjfcnLS5NCxYl47juwwq0ASZe/0HKZ+hVKft0aXVrW0BwcYTEcl+KBFdDIBWZ1aFkN28zFf0isRGvQZueh3mcGldtletr2o046UTKVfm4CzyHl4YGgXFodpCa5uCWeGeZIFxdLihJtee5bd0SlCzOR5yUhSjrdwIwjaT+ddN5kSLyKxZg9ujBUonyZ root@nas.brandrick.net"
 }
 
 resource "aws_main_route_table_association" "a" {
